@@ -25,7 +25,7 @@ var placeCountdown = function (countdownInfo) {
             $(outside).append("<h5>" + countdownInfo.label + "</h5>");
             $(outside).append("<div id=\"" + countdownInfo.url + "\"></div>");
             
-            countdown($("#" + countdownInfo.url), c.eventDate);
+            countdown($("#" + countdownInfo.url), c.eventDate, 24, 24);
             
             $("#countdownlist").listview("refresh");
         },
