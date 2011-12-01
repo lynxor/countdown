@@ -7,20 +7,7 @@ $(function () {
             $("#countdownlist").html(""); // clear
             // iterate through countdowns
            _(o.countdowns).each(function (countdownInfo) {
-                $("#countdownlist").append("<h3>" + countdownInfo.label + "</h3>");
-                $("#countdownlist").append("<div  id=\"" + countdownInfo.url + "\">Retriving data....</div>");
-                
-                $.ajax({
-                    url: "/countdown/" + countdownInfo.url,
-                    dataType: "json",
-                    success: function (c) {
-                        $("#" + countdownInfo.url).html(""); // clear
-                        countdown($("#" + countdownInfo.url), c.eventDate);
-                    },
-                    error: function (o) {
-                        $("#" + countdownInfo.url).html("Error retrieving countdown timer");
-                    }
-                });
+               placeCountdown(countdownInfo);
             });           
         },
         error: function (o) {
@@ -28,3 +15,22 @@ $(function () {
         }
     });
 });
+
+var placeCountdown = function (countdownInfo) {
+    $.ajax({
+        url: "/countdown/" + countdownInfo.url,
+        dataType: "json",
+        success: function (c) {
+            var outside = $('<li></li>').appendTo("#countdownlist");
+            $(outside).append("<h5>" + countdownInfo.label + "</h5>");
+            $(outside).append("<div id=\"" + countdownInfo.url + "\"></div>");
+            
+            countdown($("#" + countdownInfo.url), c.eventDate);
+            
+            $("#countdownlist").listview("refresh");
+        },
+        error: function (o) {
+            $("#" + countdownInfo.url).html("Error retrieving countdown timer");
+        }
+    });
+}
