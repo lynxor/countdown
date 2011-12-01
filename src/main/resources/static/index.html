@@ -2,8 +2,12 @@
 <html>
 
 <head>
-    <title>Countdown.er</title>
+    <title>Waitfor</title>
+    <meta charset=utf-8 /> 
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
     
+    <link rel="stylesheet"  href="vendor/jquery.mobile.css" />
+
     <!-- vendor scripts -->
     <script src="vendor/jquery-1.6.2.min.js"></script>
     <script src="vendor/underscore.js"></script>
@@ -24,12 +28,42 @@
             margin-right:5px;
         }
     </style>
+    
+    <script src="vendor/jquery.mobile.min.js"></script>
+
 </head>
 
 <body>
-<div id="countdownlist">
-Loading...
+
+<div data-role="page" id="mainview">
+
+    <div data-role="header">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#newcountdown" data-icon="plus">New</a></li>
+                <li><a href="#searchcountdowns" data-icon="search">Search</a></li>
+                <li><a data-icon="star">Random</a></li>
+                <li><a data-icon="check">Save</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-item">
+        <div data-role="content" id="countdownlist">
+            <div id="t" >
+            </div>
+            
+        </div>
+    </div>
+    
 </div>
+
+<div data-role="page" id="newcountdown">
+</div>
+
+<div data-role="page" id="searchcountdowns">
+</div>
+
 </body>
 
 
