@@ -56,9 +56,39 @@
 </div>
 
 <div data-role="page" id="newcountdown">
+    <div data-role="header">
+        <h1>Add countdown</h1>
+    </div>
     
-    
-
+    <div data-role="content">
+        <form id="newcountdownForm" data-ajax="false">
+        
+            <div data-role="fieldcontain">
+                <label for="label">Label:</label>
+                <input required autofocus type="text" name="label" id="countdownLabel" value="" />
+            </div>
+            
+            <div data-role="fieldcontain">
+                <label for="tags">Tags:</label>
+                <input required autofocus type="text" name="tags" id="countdownTags" value="" />
+            </div>
+            
+            <div data-role="fieldcontain">
+                <label for="tags">Date:</label>
+                <input type="date" name="time" id="countdownDate" value="" />
+            </div>
+            
+            <div data-role="fieldcontain">
+                <label for="tags">Time:</label>
+                <input type="time" name="time" id="countdownTime" value="" />
+            </div>
+            
+            <a data-role="button" data-inline="true" data-icon="back" href="#mainview">Back</a>
+            <button type="submit" data-inline="true" data-icon="plus">Add countdown</a>
+            
+        </form> 
+        
+    </div>
 </div>
 
 <div data-role="page" id="searchcountdowns">

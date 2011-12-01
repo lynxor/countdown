@@ -1,18 +1,53 @@
-$(function () {
-    // Retrieve inital list of countdowns
-    $.ajax({
-        url: "/countdownlist",
-        dataType: "json",
-        success: function (o) {
-            $("#countdownlist").html(""); // clear
-            // iterate through countdowns
-           _(o.countdowns).each(function (countdownInfo) {
-               model.getCountdown(countdownInfo);
-            });           
-        },
-        error: function (o) {
-            alert("error retrieving data");
-        }
+$(document).bind("mobileinit", function () {
+    $(function () {
+    
+        $("#newcountdownForm").bind("submit", function (e) {
+            e.preventDefault();
+             
+            $.mobile.showPageLoadingMsg();
+            
+            var d = $("#countdownDate").text();
+            var data = {
+                label: $("#countdownLabel").val(),
+                tags: $("#countdownTags").val(),
+                eventDate:  (new Date(2011,12,15)).getTime()
+            };
+            
+            $.ajax({
+                url: "/countdown/new", 
+                data: data,
+                type: "POST",
+                success: function (o) {
+                        $.mobile.hidePageLoadingMsg();
+                        
+                        model.putCountdown(o, o);
+                        
+                        window.location = "#";
+                    }, 
+                error: function (e) {
+                    $.mobile.hidePageLoadingMsg();
+                    alert("an error occurred");
+                }
+            });
+         });
+
+
+
+        // Retrieve inital list of countdowns
+        $.ajax({
+            url: "/countdownlist",
+            dataType: "json",
+            success: function (o) {
+                $("#countdownlist").html(""); // clear
+                // iterate through countdowns
+               _(o.countdowns).each(function (countdownInfo) {
+                   model.getCountdown(countdownInfo);
+                });           
+            },
+            error: function (o) {
+                alert("error retrieving data");
+            }
+        });
     });
 });
 /*
@@ -78,5 +113,4 @@ model.clear = function () {
     this.countdowns = [];
     $("#countdownlist").html(""); // clear
  }
- 
  
