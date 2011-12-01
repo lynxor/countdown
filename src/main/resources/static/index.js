@@ -15,6 +15,18 @@ $(function () {
         }
     });
 });
+/*
+var ledColors = {
+    lit: "rgba(0, 255, 0, 1.0)",
+    unlit: "rgba(0, 255, 0, 0.1)",
+    outline: "rgba(255, 255, 255, 1.0)"
+};*/
+
+var ledColors = {
+    lit: "rgba(0, 112, 60, 1.0)",
+    unlit: "rgba(0, 0, 0, 0.0)",
+    outline: "rgba(0, 0, 0, 0.0)"
+}
 
 var placeCountdown = function (countdownInfo) {
     $.ajax({
@@ -25,7 +37,7 @@ var placeCountdown = function (countdownInfo) {
             $(outside).append("<h5>" + countdownInfo.label + "</h5>");
             $(outside).append("<div id=\"" + countdownInfo.url + "\"></div>");
             
-            countdown($("#" + countdownInfo.url), c.eventDate, 24, 24);
+            countdown($("#" + countdownInfo.url), c.eventDate, 24, 24, ledColors);
             
             $("#countdownlist").listview("refresh");
         },
