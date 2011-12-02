@@ -1,38 +1,5 @@
 $(document).bind("mobileinit", function () {
     $(function () {
-    
-        $("#newcountdownForm").bind("submit", function (e) {
-            e.preventDefault();
-             
-            $.mobile.showPageLoadingMsg();
-            
-            var d = $("#countdownDate").text();
-            var data = {
-                label: $("#countdownLabel").val(),
-                tags: $("#countdownTags").val(),
-                eventDate:  (new Date(2011,12,15)).getTime()
-            };
-            
-            $.ajax({
-                url: "/countdown/new", 
-                data: data,
-                type: "POST",
-                success: function (o) {
-                        $.mobile.hidePageLoadingMsg();
-                        
-                        model.putCountdown(o, o);
-                        
-                        window.location = "#";
-                    }, 
-                error: function (e) {
-                    $.mobile.hidePageLoadingMsg();
-                    alert("an error occurred");
-                }
-            });
-         });
-
-
-
         // Retrieve inital list of countdowns
         $.ajax({
             url: "/countdownlist",
@@ -43,6 +10,7 @@ $(document).bind("mobileinit", function () {
                _(o.countdowns).each(function (countdownInfo) {
                    model.getCountdown(countdownInfo);
                 });           
+                
             },
             error: function (o) {
                 alert("error retrieving data");
@@ -64,12 +32,14 @@ var ledColors = {
 }
 
 var findByDate = function (countdownInfo) {
-    for (var i  = 0; i < this.countdowns; i++) {
-        if (countdownInfo[i].eventDate > countdownInfo.eventDate) {
-            return countdownInfo[i].url;
-        }
+    if (this.countdowns.length == 0) {
+        return undefined;
     }
-    return undefined;
+    
+    var sortFunc = function (x) { return x.eventDate };
+    var sorted = _(this.countdowns).sortBy(sortFunc);
+    var i = _(sorted).sortedIndex(countdownInfo, sortFunc);
+    return i < sorted.length ? sorted[i].url : undefined;
 }
 
 var model = {
@@ -79,30 +49,31 @@ var model = {
 
 model.find = _.bind(findByDate, model);
 
-model.putCountdown = function (countdownInfo, c) {
+model.putCountdown = function (c) {
     
     var where = this.find(c);
     var outside;
-    var where = this.find(c);
     
     if (where === undefined) {
         outside = $('<li></li>').appendTo("#countdownlist");
     } else {
-        outside = $("<li></li>").insertAfter($("#" + where));
+        outside = $("<li></li>").insertBefore($("#" + where).parent());
     }
-    $(outside).append("<h5>" + countdownInfo.label + "</h5>");
-    $(outside).append("<div id=\"" + countdownInfo.url + "\"></div>");
+    $(outside).append("<h5>" + c.name + "</h5>");
+    $(outside).append("<div id=\"" + c.url + "\"></div>");
     
-    countdown($("#" + countdownInfo.url), c.eventDate, 24, 32, ledColors);
+    countdown($("#" + c.url), c.eventDate, 24, 32, ledColors);
     
     $("#countdownlist").listview("refresh");
+    
+    this.countdowns.push(c);
 }
 
 model.getCountdown = function (countdownInfo) {
     $.ajax({
         url: "/countdown/" + countdownInfo.url,
         dataType: "json",
-        success: _.bind(this.putCountdown, model, countdownInfo),
+        success: _.bind(this.putCountdown, model),
         error: function (o) {
             // TODO: handle the error
         }
