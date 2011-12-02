@@ -6,11 +6,18 @@ $(document).bind("mobileinit", function () {
              
             $.mobile.showPageLoadingMsg();
             
-            var d = $("#countdownDate").text();
+            var ed;
+            try {
+                ed = Date.parse($("#countdownDatetime").val());
+            } catch (err) {
+                alert("cannot parse date: " + err);
+                return;
+            }
+            
             var data = {
                 name: $("#countdownName").val(),
                 tags: $("#countdownTags").val(),
-                eventDate:  (new Date(2011,12,15)).getTime()
+                eventDate:  ed
             };
             
             $.ajax({
