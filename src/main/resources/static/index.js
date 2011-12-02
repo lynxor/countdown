@@ -1,31 +1,37 @@
 $(document).bind("mobileinit", function () {
+    
     $.mobile.defaultPageTransition = "none";
 
     $(function () {
-        // Retrieve inital list of countdowns
-        $.ajax({
-            url: "/countdownlist",
-            dataType: "json",
-            success: function (o) {
-                $("#countdownlist").html(""); // clear
-                // iterate through countdowns
-               _(o.countdowns).each(function (countdownInfo) {
-                   model.getCountdown(countdownInfo);
-                });           
-                
-            },
-            error: function (o) {
-                alert("error retrieving data");
-            }
-        });
+        retrieveAll();
     });
+    
 });
-/*
-var ledColors = {
-    lit: "rgba(0, 255, 0, 1.0)",
-    unlit: "rgba(0, 255, 0, 0.1)",
-    outline: "rgba(255, 255, 255, 1.0)"
-};*/
+
+var retrieveAll = function () {
+    // Retrieve inital list of countdowns
+    
+    $.mobile.showPageLoadingMsg();
+
+    $.ajax({
+        url: "/countdownlist",
+        dataType: "json",
+        success: function (o) {
+            
+            $.mobile.hidePageLoadingMsg();
+            
+            model.clear();
+            // iterate through countdowns
+           _(o.countdowns).each(function (countdownInfo) {
+               model.getCountdown(countdownInfo);
+            });           
+            
+        },
+        error: function (o) {
+            alert("error retrieving data");
+        }
+    });
+};
 
 var ledColors = {
     lit: "rgba(0, 112, 60, 1.0)",
