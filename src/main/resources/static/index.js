@@ -1,4 +1,6 @@
 $(document).bind("mobileinit", function () {
+    $.mobile.defaultPageTransition = "none";
+
     $(function () {
         // Retrieve inital list of countdowns
         $.ajax({
@@ -67,6 +69,8 @@ model.putCountdown = function (c) {
     $("#countdownlist").listview("refresh");
     
     this.countdowns.push(c);
+    
+    return $(outside);
 }
 
 model.getCountdown = function (countdownInfo) {

@@ -20,9 +20,13 @@ $(document).bind("mobileinit", function () {
                 success: function (o) {
                         $.mobile.hidePageLoadingMsg();
                         
-                        model.putCountdown(o, o);
+                        $.mobile.changePage($("#mainview"), "none");
+                    
+                        var n = model.putCountdown(o, true);
+                    
+                        // the following could also be "position"
+                        _.defer(function () { $.mobile.silentScroll($(n).offset().top); } );
                         
-                        window.location = "#";
                     }, 
                 error: function (e) {
                     $.mobile.hidePageLoadingMsg();
